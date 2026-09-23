@@ -10,8 +10,8 @@
   --trilho: rgba(255, 255, 255, 0.08);
 
   --texto: #eef1f8;
-  --suave: #8b93a7;
-  --fraco: #5d6479;
+  --suave: #9aa1b4; /* ≥4,5:1 sobre fundo e cartões (WCAG AA) */
+  --fraco: #80889f; /* ≥4,5:1 sobre fundo e cartões (WCAG AA) */
 
   --azul: #6d8bff;
   --azul-forte: #4f6bff;
@@ -124,7 +124,7 @@ a {
   padding: 6px 0;
   border-radius: 14px;
   color: var(--fraco);
-  font-size: 0.66rem;
+  font-size: 0.75rem;
   font-weight: 500;
   transition:
     color 0.2s,
@@ -649,13 +649,13 @@ button:disabled {
   border: 1px solid var(--campo-borda);
   border-radius: 8px;
   background: rgba(255, 255, 255, 0.1);
-  font-size: 0.7rem;
+  font-size: 0.75rem;
   white-space: nowrap;
 }
 
 .barra-rotulo {
   color: var(--suave);
-  font-size: 0.72rem;
+  font-size: 0.75rem;
 }
 
 .barra.destaque .barra-rotulo {
@@ -814,7 +814,7 @@ button:disabled {
   max-width: 88px;
   overflow: hidden;
   color: var(--suave);
-  font-size: 0.72rem;
+  font-size: 0.75rem;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -917,7 +917,7 @@ button:disabled {
 
 .evento-data span {
   color: var(--suave);
-  font-size: 0.62rem;
+  font-size: 0.75rem;
   letter-spacing: 0.05em;
   text-transform: uppercase;
 }
@@ -1071,7 +1071,7 @@ button:disabled {
 .cal-semana {
   padding: 4px 0;
   color: var(--fraco);
-  font-size: 0.7rem;
+  font-size: 0.75rem;
   text-align: center;
   text-transform: uppercase;
 }
@@ -1168,9 +1168,9 @@ button:disabled {
 
   .nav-item {
     flex: none;
-    width: 58px;
+    width: 64px;
     padding: 10px 0;
-    font-size: 0.62rem;
+    font-size: 0.75rem;
   }
 
   .conteudo {
@@ -1213,5 +1213,28 @@ button:disabled {
   .cal-dia {
     aspect-ratio: auto;
     height: 52px;
+  }
+}
+
+::selection {
+  background: rgba(109, 139, 255, 0.35);
+  color: var(--texto);
+}
+
+/* Quem pede menos movimento no sistema: barras, anel e botões mudam na hora,
+   sem crescer nem encolher. As trocas de cor continuam (não são movimento). */
+@media (prefers-reduced-motion: reduce) {
+  .barra-valor,
+  .barra-progresso > span,
+  .anel-progresso {
+    transition: none;
+  }
+
+  * {
+    scroll-behavior: auto !important;
+  }
+
+  .botao:active {
+    transform: none;
   }
 }
