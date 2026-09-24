@@ -39,9 +39,15 @@ Um painel para consultar todo dia, feito primeiro para o celular: clima, tarefas
 - **Dados em um só lugar.** Todas as telas acessam os dados por um Context do React ([`DadosProvider.tsx`](src/contexto/DadosProvider.tsx)). É o único arquivo que conversa com o banco.
 - **Atualização otimista.** A mudança aparece na tela na hora e é enviada ao banco em seguida. O `localStorage` funciona como cache para o app abrir instantâneo.
 - **Tempo real.** O app assina as mudanças das tabelas pelo Supabase Realtime e sincroniza de novo sempre que volta para a tela.
-- **Segurança por linha (RLS).** Cada tabela tem políticas que só deixam o usuário logado ler e alterar as próprias linhas. A chave usada no navegador é a *publishable*; quem protege os dados são as políticas. O esquema completo está em [`supabase/migrations`](supabase/migrations).
 - **Timer à prova de tela bloqueada.** O timer guarda o horário de término, não um contador. O tempo restante é sempre "fim − agora", então continua certo mesmo com o app em segundo plano.
 - **Tarefas repetidas sem "reset".** A tarefa guarda em que dia (ou semana) foi concluída; se não for o período atual, ela aparece pendente.
+
+## Segurança
+
+- **Segurança por linha (RLS).** Todas as tabelas têm Row Level Security com políticas separadas para ler, criar, editar e apagar, e todas exigem que a linha seja do usuário logado (`auth.uid() = user_id`). A política de edição também impede passar uma linha para outro usuário. O esquema completo está em [`supabase/migrations`](supabase/migrations).
+- **Só a chave pública no navegador.** O front usa a chave *publishable*; quem protege os dados são as políticas. A chave secreta nunca entra no código nem no histórico do Git, e o `.env.local` fica fora do repositório.
+- **Sem atalhos que ignoram o RLS.** Não há views nem funções `SECURITY DEFINER` no esquema público.
+- **Verificado.** O projeto passa sem pendências nos relatórios de segurança e desempenho da Supabase (o único aviso, proteção contra senhas vazadas, só existe no plano pago).
 
 ## Rodando localmente
 
